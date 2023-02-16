@@ -1,39 +1,35 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import css from './modal.module.css';
 import propTypes from 'prop-types';
 
-class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onCloseEsc);
-  }
+const Modal = ({ onClose, largeImageURL }) => {
+  useEffect(() => {
+    const onCloseEsc = evt => {
+      if (evt.code === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onCloseEsc);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onCloseEsc);
-  }
+    return () => {
+      window.removeEventListener('keydown', onCloseEsc);
+    };
+  });
 
-  onCloseEsc = evt => {
-    if (evt.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
-
-  closeOverlay = evt => {
+  const closeOverlay = evt => {
     if (evt.currentTarget === evt.target) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    const { largeImageURL } = this.props;
-    return (
-      <div className={css.overlay} onClick={this.closeOverlay}>
-        <div className={css.modal}>
-          <img src={largeImageURL} alt="" />
-        </div>
+  return (
+    <div className={css.overlay} onClick={closeOverlay}>
+      <div className={css.modal}>
+        <img src={largeImageURL} alt="" />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Modal.propTypes = {
   onClick: propTypes.func,
