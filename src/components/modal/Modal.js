@@ -14,7 +14,7 @@ const Modal = ({ onClose, largeImageURL }) => {
     return () => {
       window.removeEventListener('keydown', onCloseEsc);
     };
-  });
+  },[onClose]);
 
   const closeOverlay = evt => {
     if (evt.currentTarget === evt.target) {
