@@ -1,29 +1,28 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from './searchbar.module.css';
 import { IoSearchSharp } from 'react-icons/io5';
 import propTypes from 'prop-types';
 
-class Searchbar extends Component {
-  state = {
-    query: '',
+function Searchbar ({onSubmit})   {
+
+  const [query, setQuery] = useState('')
+
+  const handleChange = evt => {
+    setQuery(evt.target.value)    
   };
 
-  handleChange = evt => {
-    this.setState({ query: evt.target.value });
-  };
-
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
-    if (this.state.query.trim() === "") { 
+    if (query.trim() === "") { 
       return alert("Please enter something.")
     }
-    this.props.onSubmit(this.state.query);
+    onSubmit(query);
   };
 
-  render() {
+ 
     return (
       <header className={css.Searchbar}>
-        <form onSubmit={this.handleSubmit} className={css.SearchForm}>
+        <form onSubmit={handleSubmit} className={css.SearchForm}>
           <button type="submit" className={css.SearchForm_button}>
             <IoSearchSharp size={30} />
             <span className={css.SearchForm_button_label}></span>
@@ -31,7 +30,7 @@ class Searchbar extends Component {
 
           <input
             className={css.SearchForm_input}
-            onChange={this.handleChange}
+            onChange={handleChange}
             type="text"
             autoComplete="off"
             autoFocus
@@ -40,7 +39,7 @@ class Searchbar extends Component {
         </form>
       </header>
     );
-  }
+  
 }
 
 Searchbar.propTypes = {
